@@ -13,12 +13,12 @@ let tia_keys = process.env.COSMOS_KEY!.split(",");
 const pre_fix_name = "celestia";
 const token_name = "tia";
 const fee = {
-  amount: [{ denom: "u" + token_name, amount: "200" }],
+  amount: [{ denom: "u" + token_name, amount: "9500" }],
   gas: "95000",
 };
 const memo =
   "ZGF0YToseyJvcCI6Im1pbnQiLCJhbXQiOjEwMDAwLCJ0aWNrIjoiY2lhcyIsInAiOiJjaWEtMjAifQ==";
-const value_amount_denom = "100";
+const value_amount_denom = "1";
 
 async function main() {
   let seprate_signer_by_wallets: {
