@@ -2,6 +2,7 @@ import {
   DeliverTxResponse,
   SigningStargateClient,
   StargateClient,
+  SequenceResponse,
 } from "@cosmjs/stargate";
 import { Secp256k1HdWallet, Secp256k1Wallet } from "@cosmjs/amino";
 import "dotenv/config";
@@ -14,9 +15,15 @@ const fee = {
   gas: "95000",
 };
 const memo = "";
+const value_amount_denom = "1";
 
 async function main() {
-  let wallets: Secp256k1HdWallet[] = [];
+  let seprate_signer_by_wallets: {
+    client: SigningStargateClient;
+    address: string;
+    wallet: Secp256k1HdWallet;
+  }[] = [];
+  // let counter:{[key:string]:number} =[];
   for (let key of tia_keys) {
     // let wallet = await Secp256k1HdWallet.fromMnemonic(, {
     //   prefix: "celestia",
@@ -24,27 +31,45 @@ async function main() {
     const wallet = await Secp256k1HdWallet.fromMnemonic(key, {
       prefix: "celestia",
     });
-    wallets.push(wallet);
+    let address = (await wallet.getAccounts())[0].address;
+    const client = await SigningStargateClient.connectWithSigner(
+      rpc_endpoint,
+      wallet
+    );
+    seprate_signer_by_wallets.push({ client, address, wallet });
   }
+  let counter = 0;
   while (true) {
-    let promises: Promise<DeliverTxResponse>[] = [];
-    for (let wallet of wallets) {
-      let address = (await wallet.getAccounts())[0].address;
-      const client = await SigningStargateClient.connectWithSigner(
-        rpc_endpoint,
-        wallet
-      );
+    let promises: Promise<DeliverTxResponse | null>[] = [];
+    for (let signer of seprate_signer_by_wallets) {
       const msg = {
         typeUrl: "/cosmos.bank.v1beta1.MsgSend",
         value: {
-          fromAddress: address,
-          toAddress: address,
-          amount: [{ denom: "u" + token_name, amount: "0" }],
+          fromAddress: signer.address,
+          toAddress: signer.address,
+          amount: [{ denom: "u" + token_name, amount: value_amount_denom }],
         },
       };
-      promises.push(client.signAndBroadcast(address, [msg], fee, memo));
+      promises.push(
+        signer.client
+          .signAndBroadcast(signer.address, [msg], fee, memo)
+          .catch((e) => {
+            // console.log("one send error");
+            return null;
+          })
+      );
+      // console.log("pass in");
     }
-    await Promise.all(promises);
+    console.time();
+    await Promise.all(promises).then((array) => {
+      for (let i = 0; i < array.length; i++) {
+        if (array[i] !== null) {
+          counter++;
+          console.log("mint:", counter);
+        }
+      }
+    });
+    console.timeEnd();
   }
 }
 
