@@ -4,19 +4,19 @@ import { SigningStargateClient, StargateClient } from "@cosmjs/stargate";
 import { Secp256k1HdWallet, Secp256k1Wallet } from "@cosmjs/amino";
 import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
 import "dotenv/config";
-const rpc_endpoint = "https://celestia-mocha-rpc.publicnode.com:443";
+const rpc_endpoint = "https://rpc-2.celestia.nodes.guru";
 //1 mil denom token = 1 native
 const token_name = "tia";
 const fee = {
   amount: [{ denom: "u" + token_name, amount: "400" }],
-  gas: "80000",
+  gas: "95000",
 };
-const memo = "test2";
+const memo = "";
 
-let wallet = await Secp256k1HdWallet.fromMnemonic(process.env.COSMOS_KEY!, {
-  prefix: "tia",
-});
 async function main() {
+  let wallet = await Secp256k1HdWallet.fromMnemonic(process.env.COSMOS_KEY!, {
+    prefix: "celestia",
+  });
   let address = (await wallet.getAccounts())[0].address;
   const client = await SigningStargateClient.connectWithSigner(
     rpc_endpoint,
