@@ -16,3 +16,5 @@ npm install -g ts-node
 npm i
 
 ts-node cosmo.ts
+
+根据 inscript 的实例修改 memo，和 to:address,必要时提高 gas

@@ -11,7 +11,7 @@ const rpc_endpoint = "https://rpc-2.celestia.nodes.guru";
 let tia_keys = process.env.COSMOS_KEY!.split(",");
 const token_name = "tia";
 const fee = {
-  amount: [{ denom: "u" + token_name, amount: "400" }],
+  amount: [{ denom: "u" + token_name, amount: "200" }],
   gas: "95000",
 };
 const memo = "";
@@ -31,6 +31,7 @@ async function main() {
     const wallet = await Secp256k1HdWallet.fromMnemonic(key, {
       prefix: "celestia",
     });
+    // const wallet2 = await Secp256k1Wallet.fromKey
     let address = (await wallet.getAccounts())[0].address;
     const client = await SigningStargateClient.connectWithSigner(
       rpc_endpoint,
