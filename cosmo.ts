@@ -23,7 +23,7 @@ async function main() {
   let seprate_signer_by_wallets: {
     client: SigningStargateClient;
     address: string;
-    wallet: Secp256k1HdWallet;
+    wallet: Secp256k1Wallet;
   }[] = [];
   // let counter:{[key:string]:number} =[];
   for (let key of tia_keys) {
@@ -34,7 +34,7 @@ async function main() {
     //   prefix: "celestia",
     // });
     const base64String = key;
-    const buffer = Buffer.from(base64String, "base64");
+    const buffer = Buffer.from(base64String, "utf-8");
     const uint8Array = new Uint8Array(buffer);
     const wallet = await Secp256k1Wallet.fromKey(uint8Array, "celestia");
     let address = (await wallet.getAccounts())[0].address;
