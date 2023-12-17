@@ -11,6 +11,7 @@ import { makeAuthInfoBytes } from "@cosmjs/proto-signing";
 // import {}
 //1 mil denom token = 1 native
 let tia_keys = process.env.COSMOS_KEY!.split(",");
+const pre_fix_name = "celestia";
 const token_name = "tia";
 const fee = {
   amount: [{ denom: "u" + token_name, amount: "200" }],
@@ -23,20 +24,20 @@ async function main() {
   let seprate_signer_by_wallets: {
     client: SigningStargateClient;
     address: string;
-    wallet: Secp256k1Wallet;
+    wallet: Secp256k1HdWallet;
   }[] = [];
   // let counter:{[key:string]:number} =[];
   for (let key of tia_keys) {
     // let wallet = await Secp256k1HdWallet.fromMnemonic(, {
     //   prefix: "celestia",
     // });
-    // const wallet = await Secp256k1HdWallet.fromMnemonic(key, {
-    //   prefix: "celestia",
-    // });
-    const base64String = key;
-    const buffer = Buffer.from(base64String, "utf-8");
-    const uint8Array = new Uint8Array(buffer);
-    const wallet = await Secp256k1Wallet.fromKey(uint8Array, "celestia");
+    const wallet = await Secp256k1HdWallet.fromMnemonic(key, {
+      prefix: pre_fix_name,
+    });
+    // const base64String = key;
+    // const buffer = Buffer.from(base64String, "utf-8");
+    // const uint8Array = new Uint8Array(buffer);
+    // const wallet = await Secp256k1Wallet.fromKey(uint8Array, "celestia");
     let address = (await wallet.getAccounts())[0].address;
     const client = await SigningStargateClient.connectWithSigner(
       rpc_endpoint,
