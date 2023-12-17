@@ -7,8 +7,7 @@ import {
 import { Secp256k1HdWallet, Secp256k1Wallet } from "@cosmjs/amino";
 import "dotenv/config";
 const rpc_endpoint = "https://rpc-2.celestia.nodes.guru";
-import { makeAuthInfoBytes } from "@cosmjs/proto-signing";
-// import {}
+
 //1 mil denom token = 1 native
 let tia_keys = process.env.COSMOS_KEY!.split(",");
 const pre_fix_name = "celestia";
@@ -17,8 +16,9 @@ const fee = {
   amount: [{ denom: "u" + token_name, amount: "200" }],
   gas: "95000",
 };
-const memo = "";
-const value_amount_denom = "1";
+const memo =
+  "ZGF0YToseyJvcCI6Im1pbnQiLCJhbXQiOjEwMDAwLCJ0aWNrIjoiY2lhcyIsInAiOiJjaWEtMjAifQ==";
+const value_amount_denom = "100";
 
 async function main() {
   let seprate_signer_by_wallets: {
@@ -63,7 +63,7 @@ async function main() {
         signer.client
           .signAndBroadcast(signer.address, [msg], fee, memo)
           .catch((e) => {
-            // console.log("one send error");
+            console.log(e);
             return null;
           })
       );
