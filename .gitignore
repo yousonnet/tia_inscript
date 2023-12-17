@@ -1,3 +1,4 @@
 .history
 .env
 node_modules
+node.ts
