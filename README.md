@@ -4,9 +4,9 @@
 
 ex:
 
-COSMOS_KEY=xxx xxx xxx,xxx xxx xxx,
+COSMOS_KEY=xxx xxx xxx,xxx xxx xxx
 
-xxx xxx xxx 为助记词
+xxx xxx xxx 为助记词,不同 walllet 的助记词中间用,隔开
 
 ```
 npm install -g typescript
