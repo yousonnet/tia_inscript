@@ -7,6 +7,8 @@ import {
 import { Secp256k1HdWallet, Secp256k1Wallet } from "@cosmjs/amino";
 import "dotenv/config";
 const rpc_endpoint = "https://rpc-2.celestia.nodes.guru";
+import { makeAuthInfoBytes } from "@cosmjs/proto-signing";
+// import {}
 //1 mil denom token = 1 native
 let tia_keys = process.env.COSMOS_KEY!.split(",");
 const token_name = "tia";
@@ -28,10 +30,13 @@ async function main() {
     // let wallet = await Secp256k1HdWallet.fromMnemonic(, {
     //   prefix: "celestia",
     // });
-    const wallet = await Secp256k1HdWallet.fromMnemonic(key, {
-      prefix: "celestia",
-    });
-    // const wallet2 = await Secp256k1Wallet.fromKey
+    // const wallet = await Secp256k1HdWallet.fromMnemonic(key, {
+    //   prefix: "celestia",
+    // });
+    const base64String = key;
+    const buffer = Buffer.from(base64String, "base64");
+    const uint8Array = new Uint8Array(buffer);
+    const wallet = await Secp256k1Wallet.fromKey(uint8Array, "celestia");
     let address = (await wallet.getAccounts())[0].address;
     const client = await SigningStargateClient.connectWithSigner(
       rpc_endpoint,
@@ -39,6 +44,7 @@ async function main() {
     );
     seprate_signer_by_wallets.push({ client, address, wallet });
   }
+
   let counter = 0;
   while (true) {
     let promises: Promise<DeliverTxResponse | null>[] = [];
@@ -51,6 +57,7 @@ async function main() {
           amount: [{ denom: "u" + token_name, amount: value_amount_denom }],
         },
       };
+      // signer.client.broadcastTx(tx)
       promises.push(
         signer.client
           .signAndBroadcast(signer.address, [msg], fee, memo)
