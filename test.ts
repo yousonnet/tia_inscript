@@ -1,3 +1,5 @@
+import { formatEther, formatUnits } from "ethers";
+
 function hexToString(hex: string): string {
   // 确保十六进制字符串的长度是偶数
   if (hex.length % 2 !== 0) {
@@ -16,4 +18,5 @@ function hexToString(hex: string): string {
 }
 let string =
   "ZGF0YToseyJvcCI6Im1pbnQiLCJhbXQiOjEwMDAwLCJ0aWNrIjoiY2lhcyIsInAiOiJjaWEtMjAifQ==";
-console.log(hexToString(string));
+// console.log(hexToString(string));
+console.log(formatUnits(2 * 1e9, "gwei"));
