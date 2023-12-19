@@ -6,9 +6,9 @@ import {
   formatUnits,
 } from "ethers";
 import "dotenv/config";
-let node_provider = new ethers.JsonRpcProvider("https://rpc.gnosischain.com");
+let node_provider = new ethers.JsonRpcProvider("https://arbitrum.llamarpc.com");
 let data =
-  "0x646174613a2c7b2270223a226173632d3230222c226f70223a226d696e74222c227469636b223a2242454547222c22616d74223a2231303030227d";
+  "0x646174613a2c7b2270223a2276696d732d3230222c226f70223a226d696e74222c227469636b223a2276696d73222c22616d74223a223130303030227d";
 let times = 10;
 
 async function main() {
@@ -34,9 +34,9 @@ async function main() {
             // gasLimit: 50000,
             // gasPrice: 10,
             value: 0,
-            // gasPrice: feedata.gasPrice,
-            maxFeePerGas: feedata.maxFeePerGas,
-            maxPriorityFeePerGas: feedata.maxPriorityFeePerGas,
+            gasPrice: feedata.gasPrice,
+            // maxFeePerGas: feedata.maxFeePerGas,
+            // maxPriorityFeePerGas: feedata.maxPriorityFeePerGas,
             // maxPriorityFeePerGas: Number(i * 1e9).toFixed(0),
             nonce: addresses[index].nonce,
           })
@@ -54,7 +54,7 @@ async function main() {
         console.log(counter);
       })
       .catch((e) => {
-        console.log("err");
+        console.log(e);
       });
   }
 }
