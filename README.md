@@ -38,6 +38,6 @@ gas: "85000",
 
 修改 times，一个 tx 里一个 wallet batch 发送的数量
 
-如果不是自转脚本，请修改 to_address
+如果不是自转脚本，请修改 is_self_transfer 里的到指定地址
 
 # **ps:本脚本不适用于 inj**
