@@ -32,6 +32,8 @@ const memo = "urn:cft20:cosmoshub-4@v1;mint$tic=ROIDS,amt=1000000000";
 const value_amount_denom = "1";
 const times = 10;
 const is_private_key = false;
+const is_self_transfer = "";
+//默认为自转
 
 async function main() {
   let seprate_signer_by_wallets: {
@@ -71,7 +73,8 @@ async function main() {
         typeUrl: "/cosmos.bank.v1beta1.MsgSend",
         value: {
           fromAddress: signer.address,
-          toAddress: signer.address,
+          toAddress:
+            is_self_transfer === "" ? signer.address : is_self_transfer,
           amount: [{ denom: "u" + token_name, amount: value_amount_denom }],
         },
       };
