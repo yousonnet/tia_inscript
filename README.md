@@ -39,7 +39,7 @@ gas: "85000",
 修改 value_denom_amount 即修改自转的 value ，例 1 atom=1,000,000uatom
 个别铭文会索引 tx 里的 value
 
-修改 times，一个 tx 里一个 wallet batch 发送的数量
+修改 times，一个 block 里一个 wallet batch 发送的数量,由于 sequence 的处理先后问题，这里面有一个成功概率，大概是每个 block 一个 wallet 的 batch 会有 3-6 条被接受，所以设置成 10 是一个理想数字。
 
 如果不是自转脚本，请修改 is_self_transfer 里的到指定地址
 
